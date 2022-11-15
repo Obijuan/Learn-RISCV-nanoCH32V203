@@ -362,12 +362,6 @@ void GPIO_ResetBits(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
  */
 void GPIO_WriteBit(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
 {
-#if defined (CH32V20x_D6)
-    if(GPIOx == GPIOC){
-        GPIO_Pin = GPIO_Pin >> 13;
-    }
-
-#endif
 
     if(BitVal != Bit_RESET)
     {
