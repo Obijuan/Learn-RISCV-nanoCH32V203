@@ -96,37 +96,10 @@ void GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_InitStruct)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*********************************************************************
- * @fn      GPIO_WriteBit
- *
- * @brief   Sets or clears the selected data port bit.
- *
- * @param   GPIO_Pin - specifies the port bit to be written.
- *            This parameter can be one of GPIO_Pin_x where x can be (0..15).
- *          BitVal - specifies the value to be written to the selected bit.
- *            Bit_SetL - to clear the port pin.
- *            Bit_SetH - to set the port pin.
- *
- * @return  none
- */
-void GPIO_WriteBit(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
+void GPIO_WriteBit(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint8_t BitVal)
 {
 
-    if(BitVal != Bit_RESET)
+    if(BitVal != 0)
     {
         GPIOx->BSHR = GPIO_Pin;
     }
