@@ -1,8 +1,27 @@
-//#include "ch32v20x.h"
-#include "ch32v20x_rcc.h"
+#include "ch32v20x.h"
 
-#define My_RCC_APB2Periph_GPIOA           ((uint32_t)0x00000004)  
+#define RCC_APB2Periph_GPIOA           ((uint32_t)0x00000004)  
 #define My_GPIO_Pin_15                     ((uint16_t)0x8000) /* Pin 15 selected */
+
+#define PERIPH_BASE                             ((uint32_t)0x40000000) /* Peripheral base address in the alias region */
+
+/* Reset and Clock Control */
+typedef struct
+{
+    __IO uint32_t CTLR;
+    __IO uint32_t CFGR0;
+    __IO uint32_t INTR;
+    __IO uint32_t APB2PRSTR;
+    __IO uint32_t APB1PRSTR;
+    __IO uint32_t AHBPCENR;
+    __IO uint32_t APB2PCENR;
+    __IO uint32_t APB1PCENR;
+    __IO uint32_t BDCTLR;
+    __IO uint32_t RSTSCKR;
+
+    __IO uint32_t AHBRSTR;
+    __IO uint32_t CFGR2;
+} My_RCC_TypeDef;
 
 /* Output Maximum frequency selection */
 typedef enum
@@ -129,7 +148,7 @@ void GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_InitStruct)
 int main(void)
 {
     //-- Habilitar APB2
-    RCC->APB2PCENR |= My_RCC_APB2Periph_GPIOA;
+    RCC->APB2PCENR |= RCC_APB2Periph_GPIOA;
 
     GPIO_InitTypeDef GPIO_InitStructure = {0};
 
