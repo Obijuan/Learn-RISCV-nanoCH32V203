@@ -1,14 +1,3 @@
-
-	.section	.init,"ax",@progbits
-	.global	_start
-	.align	1
- _start:   
-	j	main
-
-	.text
-	.align	1
-	.globl	main
-
 	#-- Reset and Control Clock
 	.equ RCC_BASE, 0x40021000
 	.equ APB2PCENR, 6*4
@@ -18,7 +7,13 @@
 	.equ CFGHR, 1*4
 	.equ BCR, 5*4
 
-main:
+
+
+	.section	.init,"ax",@progbits
+	.global	_start
+	.align	1
+
+ _start:   
 
 	#-- Habilitar APB2: Puerto A
 	li t0, RCC_BASE
