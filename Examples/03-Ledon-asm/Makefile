@@ -8,7 +8,7 @@ OBJCOPY := riscv-none-embed-objcopy
 
 BUILD_DIR ?= ./build
 
-SRCS := startup_ch32v20x_D6.S main.S 
+SRCS := startup_ch32v20x_D6.S 
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
