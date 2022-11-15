@@ -1,0 +1,47 @@
+TARGET_NAME ?= app
+TARGET_ELF  ?= $(TARGET_NAME).elf
+TARGET_BIN  ?= $(TARGET_NAME).bin
+
+AS := riscv-none-embed-gcc
+CC := riscv-none-embed-gcc
+OBJCOPY := riscv-none-embed-objcopy
+
+BUILD_DIR ?= ./build
+SRC_DIRS ?= ./app 
+
+SRCS := core_riscv.c main.c startup_ch32v20x_D6.S ch32v20x_rcc.c system_ch32v20x.c ch32v20x_gpio.c
+OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
+DEPS := $(OBJS:.o=.d)
+
+INC_FLAGS := -I./app
+
+FLAGS ?= -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wunused -Wuninitialized  -g
+ASFLAGS ?= $(FLAGS) -x assembler $(INC_FLAGS) -MMD -MP
+CPPFLAGS ?=  $(FLAGS) $(INC_FLAGS) -std=gnu99 -MMD -MP
+LDFLAGS ?= $(FLAGS) -T ./Link.ld -nostartfiles -Xlinker --gc-sections -Wl,-Map,"$(BUILD_DIR)/CH32V203.map" --specs=nano.specs --specs=nosys.specs
+
+
+$(BUILD_DIR)/$(TARGET_ELF): $(OBJS)
+	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+	$(OBJCOPY) -Obinary $@ $(BUILD_DIR)/$(TARGET_BIN)
+
+# assembly
+$(BUILD_DIR)/%.S.o: %.S
+	$(MKDIR_P) $(dir $@)
+	$(CC) $(ASFLAGS) -c $< -o $@
+
+# c source
+$(BUILD_DIR)/%.c.o: %.c
+	$(MKDIR_P) $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+
+
+.PHONY: clean
+
+clean:
+	$(RM) -r $(BUILD_DIR)
+
+-include $(DEPS)
+
+MKDIR_P ?= mkdir -p
