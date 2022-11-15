@@ -12,11 +12,9 @@ SRCS := startup_ch32v20x_D6.S main.c
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-INC_FLAGS := -I./app
-
 FLAGS ?= -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wunused -Wuninitialized  -g
-ASFLAGS ?= $(FLAGS) -x assembler $(INC_FLAGS) -MMD -MP
-CPPFLAGS ?=  $(FLAGS) $(INC_FLAGS) -std=gnu99 -MMD -MP
+ASFLAGS ?= $(FLAGS) -x assembler -MMD -MP
+CPPFLAGS ?=  $(FLAGS) -std=gnu99 -MMD -MP
 LDFLAGS ?= $(FLAGS) -T ./Link.ld -nostartfiles -Xlinker --gc-sections -Wl,-Map,"$(BUILD_DIR)/CH32V203.map" --specs=nano.specs --specs=nosys.specs
 
 
